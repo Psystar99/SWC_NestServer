@@ -10,6 +10,7 @@ export class MovieController {
 
     @Get()
     getAll(): Movie[]{
+        // 작동 이유: movieService라는 property를 만들고 MovieService라는 타입을 지정해줘서 - dependecy injection
         return this.movieService.getAll();
     }
 
@@ -20,7 +21,6 @@ export class MovieController {
 
     @Get(":id") 
     getOne(@Param('id') movieid: number): Movie{ //NestJS는 무언가 필요하면 우리가 요청해야됨. 우리는 url에 있는 id라는 parameter을 get하길 원함. 그리고 movieid라는 argument에 스트링 타입으로 저장.
-        console.log(typeof movieid);
         return this. movieService.getOne(movieid);
     }
 
@@ -29,13 +29,13 @@ export class MovieController {
         return this.movieService.create(movieData);
     }
 
-    @Delete("/:id")
+    @Delete(":id")
     remove(@Param('id') movieid: number ){
         return this.movieService.deleteOne(movieid);
     }
 
     //put은 전체 업데이트. patch는 일부 업데이트
-    @Patch('/:id')
+    @Patch(':id')
     patch(@Param('id') movieid: number, @Body() updateData: UpdateMovieDto){
         return this.movieService.update(movieid, updateData);
     }

@@ -28,6 +28,7 @@ export class MovieService {
 
     deleteOne(id: number) {
         this.getOne(id);
+        // filter ()안 조건에 맞는 친구만 필더링
         this.movies = this.movies.filter(movie => movie.id !== id);
     }
 

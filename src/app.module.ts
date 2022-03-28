@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { MovieModule } from './movie/movie.module';
 import { AppController } from './app.controller';
 
-@Module({ // 데코레이터 - 클래스에 함수 기능 추가할 수 있음. 클래스 위의 함수이고, 클래스를 위해 움직인다고 생각하면 됨.
+@Module({ // 데코레이터 - 클래스에 함수 기능 추가할 수 있음. 클래스 위의 함수이고, 클래스를 위해 움직인다고 생각하면 됨. 여러 가지를 import하고 NestJS가 앱을 구동하면 모든걸 하나의 모듈로 생성해줌
   imports: [MovieModule], // 앱을 만들 떄에는 모듈로 분리하는 것이 좋음
   controllers: [AppController], // 컨트롤러 - url 가져오고 함수 실행. like express의 라우터
   providers: [ ], 
