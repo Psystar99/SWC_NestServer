@@ -1,40 +1,43 @@
+import { Model } from 'mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-import { Movie } from './entities/movie.entity';
+import { Movie, MovieDocument, MovieSchema } from './entities/movie.entity';
+
 // Query 처리
 @Injectable()
 export class MovieService {
-    private movies : Movie[] = [];
+    constructor(@InjectModel(Movie.name) private movieModel: Model<MovieDocument>) {}
     
-    getAll() : Movie[] {
-        return this.movies;
+    async getAll() : Promise<Movie[]> {
+        return this.movieModel.find().exec();
     }
 
-    getOne(id: number): Movie {
-        const movie = this.movies.find(movie => movie.id === id);
-        if (!movie) {
-            throw new NotFoundException(`Movie with ID ${id} not found.`);
-        }
-        return movie;
+    async getOne(id: number): Promise<Movie> {
+        let queryParam = {};
+        queryParam['id']= id;
+        return this.movieModel.findOne(queryParam).exec();
     }
 
-    create(movieData: CreateMovieDto) {
-        this.movies.push({
-            id: this.movies.length +1,
-            ...movieData
-        });
+    async create(movieDto: CreateMovieDto): Promise<Movie> {
+        const createdmovie = new this.movieModel({
+            ...movieDto,
+            createdAt: new Date(),});
+        return createdmovie.save();
     }
 
     deleteOne(id: number) {
-        this.getOne(id);
-        // filter ()안 조건에 맞는 친구만 필더링
-        this.movies = this.movies.filter(movie => movie.id !== id);
+        let queryParam = {};
+        queryParam['id']= id;
+        return this.movieModel.findOneAndDelete(queryParam).exec();
     }
 
     update(id: number, updateData: UpdateMovieDto) {
-        const movie = this.getOne(id);
-        this.deleteOne(id);
-        this.movies.push({ ...movie, ...updateData});
+        let queryParam = {};
+        queryParam['id']= id;
+        return this.movieModel.findOneAndUpdate(queryParam, updateData, {
+            new: true
+        });
     }
 }

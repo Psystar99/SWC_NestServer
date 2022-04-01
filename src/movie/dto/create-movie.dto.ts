@@ -3,6 +3,9 @@ import { IsNumber, IsOptional, IsString } from "class-validator";
 
 // DTO는 코드를 더 간결하게 하기 위해, 그리고 NestJS가 들어오는 쿼리에 대해 유효성 검사를 할 수 있게 해줌.
 export class CreateMovieDto{
+    @IsNumber()
+    readonly id: number;
+
     @IsString()
     readonly title: string;
 

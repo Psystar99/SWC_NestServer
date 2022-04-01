@@ -9,19 +9,14 @@ export class MovieController {
     constructor(private readonly movieService: MovieService) {}
 
     @Get()
-    getAll(): Movie[]{
+    getAll(): Promise<Movie[]>{
         // 작동 이유: movieService라는 property를 만들고 MovieService라는 타입을 지정해줘서 - dependecy injection
         return this.movieService.getAll();
     }
 
-    @Get('search') // movie/search?year=200. 이때 id를 받는 라우터가 search 위에 있으면 search 작동 x.
-    search(@Query('year') year: string) {
-        return `We are searching for a movie after ${year}`;
-    }
-
     @Get(":id") 
-    getOne(@Param('id') movieid: number): Movie{ //NestJS는 무언가 필요하면 우리가 요청해야됨. 우리는 url에 있는 id라는 parameter을 get하길 원함. 그리고 movieid라는 argument에 스트링 타입으로 저장.
-        return this. movieService.getOne(movieid);
+    getOne(@Param('id') movieid: number): Promise<Movie>{ //NestJS는 무언가 필요하면 우리가 요청해야됨. 우리는 url에 있는 id라는 parameter을 get하길 원함. 그리고 movieid라는 argument에 스트링 타입으로 저장.
+        return this.movieService.getOne(movieid);
     }
 
     @Post()
