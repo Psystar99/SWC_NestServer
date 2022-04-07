@@ -10,7 +10,7 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     MovieModule,
     ConfigModule.forRoot(),
-    MongooseModule.forRoot('mongodb://mongo:27017/nest')
+    MongooseModule.forRoot(process.env.MONGO_URL) // 'mongodb://mongo:27017/nest'
   ], // 앱을 만들 떄에는 모듈로 분리하는 것이 좋음
   controllers: [AppController], // 컨트롤러 - url 가져오고 함수 실행. like express의 라우터
   providers: [ ], 
